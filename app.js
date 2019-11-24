@@ -1,22 +1,11 @@
-
-var express = require('express');
-var routes = require('./routes');
-var path = require('path');
-
-var mongoose = require('mongoose');
-var passport = require('passport');
-
-var restify = require('restify')
+const express = require('express');
+const routes = require('./routes');
+const path = require('path');
+const passport = require('passport');
+const restify = require('restify')
 
 require('./passport')(passport);
-
-mongoose.connect('mongodb://localhost:27017/passport-example', function (err, res) {
-  if (err) throw err;
-  console.log('Conectado con éxito a la BD');
-});
-
-
-var app = express();
+const app = express();
 
 
 app.set('port', process.env.PORT || 5000);
@@ -48,6 +37,5 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook',
 app.get('/auth/google/callback', passport.authenticate('google',
   { successRedirect: '/', failureRedirect: '/login' }
 ));
-app.listen(app.get('port'), function () {
-  console.log('Server on PORT: ' + app.get('port'));
-});
+
+module.exports = app

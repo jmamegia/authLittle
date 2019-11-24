@@ -1,12 +1,11 @@
-var User = require('./models/User')
-var passport = require('passport');
+const User = require('./models/User')
+const passport = require('passport');
 
 //strategies
-var TwitterStrategy = require('passport-twitter').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth2').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
-var config = require('./config');
 
 module.exports = function (passport) {
 
@@ -19,14 +18,14 @@ module.exports = function (passport) {
 	});
 
 	passport.use(new TwitterStrategy({
-		consumerKey: config.twitter.key,
-		consumerSecret: config.twitter.secret,
+		consumerKey: process.env.TW_KEY,
+		consumerSecret: process.env.TW_SRC,
 		callbackURL: '/auth/twitter/callback'
 	}, function (accessToken, refreshToken, profile, done) {
 		User.findOne({ provider_id: profile.id }, function (err, user) {
 			if (err) throw (err);
 			if (!err && user != null) return done(null, user);
-			var user = new User({
+			const user = new User({
 				provider_id: profile.id,
 				provider: profile.provider,
 				name: profile.displayName,
@@ -40,15 +39,15 @@ module.exports = function (passport) {
 	}));
 
 	passport.use(new FacebookStrategy({
-		clientID: config.facebook.key,
-		clientSecret: config.facebook.secret,
+		clientID: process.env.FB_KEY,
+		clientSecret: process.env.FB_SRC,
 		callbackURL: '/auth/facebook/callback',
 		profileFields: ['id', 'displayName', /*'provider',*/ 'photos']
 	}, function (accessToken, refreshToken, profile, done) {
 		User.findOne({ provider_id: profile.id }, function (err, user) {
 			if (err) throw (err);
 			if (!err && user != null) return done(null, user);
-			var user = new User({
+			const user = new User({
 				provider_id: profile.id,
 				provider: profile.provider,
 				name: profile.displayName,
@@ -64,8 +63,8 @@ module.exports = function (passport) {
 };
 
 passport.use(new GoogleStrategy({
-	clientID: config.google.key,
-	clientSecret: config.google.secret,
+	clientID: process.env.GL_KEY,
+	clientSecret: process.env.GL_SRC,
 	callbackURL: "/auth/google/callback",
 	passReqToCallback: true
 },
@@ -74,7 +73,7 @@ passport.use(new GoogleStrategy({
 			if (err) throw (err);
 			if (!err && user != null) return done(null, user);
 		});
-		var user = new User({
+		const user = new User({
 			provider_id: profile.id,
 			provider: profile.provider,
 			name: profile.displayName,
