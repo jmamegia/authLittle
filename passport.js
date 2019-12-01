@@ -69,19 +69,20 @@ passport.use(new GoogleStrategy({
 	passReqToCallback: true
 },
 	function (request, accessToken, refreshToken, profile, done) {
-		User.findOne({ provider_id: profile.id }, function (err, user) {
+		/*User.findOne({ provider_id: profile.id }, function (err, user) {
 			if (err) throw (err);
 			if (!err && user != null) return done(null, user);
-		});
+		});*/
 		const user = new User({
 			provider_id: profile.id,
 			provider: profile.provider,
 			name: profile.displayName,
 			photo: profile.photos[0].value
 		});
-		user.save(function (err) {
+		/*user.save(function (err) {
 			if (err) throw err;
 			done(null, user);
-		});
+		});*/
+		done(null, user);
 	}
 ));

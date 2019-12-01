@@ -8,23 +8,23 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 		trim: true,
-		unique: true,
+		unique: false,
 		lowercase: true,
 	},
 	photo: String,
 	email: {
 		type: String,
-		required: true,
-		unique: true,
+		required: false,
+		unique: false,
 	},
 	password: {
 		type: String,
-		required: true
+		required: false
 	},
 	role: String
 }, {
-	timestamps: true
-})
+		timestamps: true
+	})
 
 userSchema.methods.encryptPassword = async (password) => {
 	const hash = await bcrypt.hash(password, await bcrypt.genSalt(10))
