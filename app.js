@@ -34,7 +34,7 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter',
   { successRedirect: '/', failureRedirect: '/login' }
 ));
 app.get('/auth/facebook/callback', passport.authenticate('facebook',
-  { successRedirect: '/', failureRedirect: '/login' }
+  { successRedirect: 'https://juanmamegia.tk:5443', failureRedirect: '/login' }
 ));
 app.get('/auth/google/callback', passport.authenticate('google',
   { successRedirect: '/', failureRedirect: '/login' }
